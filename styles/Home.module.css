@@ -1,0 +1,28 @@
+.container {
+  background-color: #FFF;
+}
+
+.header {
+  background-color: #F9F9FB;
+  padding: 50px 24px 30px 24px;
+}
+
+.headerTop {}
+
+.headerTopLeft {}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: 500;
+  color: #1B1B1B;
+}
+
+.headerSubtitle {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(151, 151, 151, 0.8);
+}
+
+.headerTopRight {}
+
+.headerBotton {}
