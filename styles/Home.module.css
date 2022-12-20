@@ -7,7 +7,12 @@
   padding: 50px 24px 30px 24px;
 }
 
-.headerTop {}
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 27px;
+}
 
 .headerTopLeft {}
 
@@ -15,6 +20,7 @@
   font-size: 24px;
   font-weight: 500;
   color: #1B1B1B;
+  margin-bottom: 8px;
 }
 
 .headerSubtitle {
@@ -24,5 +30,19 @@
 }
 
 .headerTopRight {}
+
+.menuButton {
+  width: 18px;
+  height: 16px;
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: -19px;
+}
+
+.menuButtonLine {
+  height: 2px;
+  background-color: #FB9400;
+}
 
 .headerBotton {}

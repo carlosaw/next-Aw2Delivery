@@ -1,0 +1,22 @@
+.container {
+  background-color: #FFF;
+  display: flex;
+  padding: 6px;
+  border-radius: 5px;
+}
+.button {
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  background-color: rgb(245, 243, 241);
+}
+
+.input {
+  border: 0;
+  outline: 0;
+  flex: 1;
+  height: 48px;
+  font-weight: 400;
+  font-size: 16px;
+  margin-left: 13px;
+}
