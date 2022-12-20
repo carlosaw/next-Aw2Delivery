@@ -1,15 +1,40 @@
+import { useState } from 'react';
 import styles from './styles.module.css';
 
-const SearchInput = () => {
+type Props = {
+  mainColor: string;
+  onSearch: (searchValue: string) => void;
+}
+
+const SearchInput = ({ mainColor, onSearch }: Props) => {
+  const [focused, setFocused] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    //console.log(event.code);
+    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+      onSearch(searchValue);
+    }
+  }
+
   return (
-    <div className={styles.container}>
-      <div className={styles.button}>
-        X
+    <div className={styles.container}
+      style={{ borderColor: focused ? mainColor : '#FFFFFF' }}
+    >
+      <div
+        className={styles.button}
+        onClick={() => onSearch(searchValue)}>
       </div>
+
       <input
         type="text"
         className={styles.input}
         placeholder="Digite o nome do produto"
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onKeyUp={handleKeyUp}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
       />
     </div>
   );
