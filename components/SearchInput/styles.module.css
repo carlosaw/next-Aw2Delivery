@@ -11,6 +11,9 @@
   height: 48px;
   border-radius: 5px;
   background-color: rgb(245, 243, 241);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .input {

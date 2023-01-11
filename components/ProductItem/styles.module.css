@@ -4,6 +4,10 @@
   box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid #CCC;
+}
+.container:hover {
+  border: 1px solid #999;
 }
 
 .head {
