@@ -1,12 +1,19 @@
 import { GetServerSideProps } from 'next';
+import { useEffect } from 'react';
 import { Banner } from '../../components/Banner';
 import ProductItem from '../../components/ProductItem';
 import SearchInput from '../../components/SearchInput';
-import { getTenantResponse, useApi } from '../../libs/useApi';
+import { useAppContext } from '../../contexts/AppContext';
+import { useApi } from '../../libs/useApi';
 import styles from '../../styles/Home.module.css';
+import { Tenant } from '../../types/Tenant';
 
 const Home = (data: Props) => {
-  
+  const { tenant, setTenant } = useAppContext();
+
+  useEffect(()=>{
+    setTenant(data.tenant);
+  }, []);
 
   const handleSearch = (searchValue: string) => {
     console.log(`Você está buscando por: ${searchValue}`);
@@ -23,13 +30,13 @@ const Home = (data: Props) => {
           <div className={styles.headerTopRight}>
             <div className={styles.menuButton}>
               <div className={styles.menuButtonLine}
-                style={{backgroundColor: data.tenant.mainColor}}>
+                style={{backgroundColor: tenant?.mainColor}}>
               </div>
               <div className={styles.menuButtonLine}
-                style={{backgroundColor: data.tenant.mainColor}}>
+                style={{backgroundColor: tenant?.mainColor}}>
               </div>
               <div className={styles.menuButtonLine}
-                style={{backgroundColor: data.tenant.mainColor}}>
+                style={{backgroundColor: tenant?.mainColor}}>
               </div>
             </div>
           </div>
@@ -108,8 +115,9 @@ const Home = (data: Props) => {
 
 export default Home;
 
+// Validação do slug
 type Props = {
-  tenant: getTenantResponse; 
+  tenant: Tenant; 
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
