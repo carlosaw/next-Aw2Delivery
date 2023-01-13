@@ -11,6 +11,13 @@
   text-align: center;  
 }
 
+.title {
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
 .subtitle {
   font-weight: 400;
   font-size: 18px;
@@ -18,7 +25,7 @@
   color: rgba(27, 27, 27, 0.8);
   text-align: center;
   margin: auto;
-  width: 234px;
+  width: 80%;
   padding-bottom: 40px;
   border-bottom: 2px solid #FB9400;
   position: relative;

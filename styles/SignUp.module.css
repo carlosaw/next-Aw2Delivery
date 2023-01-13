@@ -18,7 +18,7 @@
   color: rgba(27, 27, 27, 0.8);
   text-align: center;
   margin: auto;
-  width: 234px;
+  width: 220px;
   padding-bottom: 40px;
   border-bottom: 2px solid #FB9400;
   position: relative;
@@ -41,19 +41,11 @@
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  margin: auto;
+  margin-top: 30px;
   color: #000;
-  width: fit-content;
-  position: relative;
-  padding-bottom: 52px;
-  border-bottom: 2px solid #FB9400;
 }
 
 .forgetArea a {
   font-weight: 600;
   color: #000;
-}
-
-.signupArea {
-  margin-top: 52px;  
 }
