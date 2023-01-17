@@ -26,7 +26,7 @@ export const useApi = (tenantSlug: string) => ({
         return {
           slug: 'aw2burger',
           name: "Aw2🍔Burger",
-          mainColor: "#FF0000",
+          mainColor: "#FB9400",
           secondColor: "#00FF00"
         }
       break;
@@ -50,7 +50,7 @@ export const useApi = (tenantSlug: string) => ({
     return products;
   },
 
-  getProducts: async (id: string) => {
+  getProduct: async (id: string) => {
     return TEMPORARYoneProduct;
   }
 
