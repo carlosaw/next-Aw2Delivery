@@ -26,7 +26,7 @@ export const useApi = (tenantSlug: string) => ({
         return {
           slug: 'aw2burger',
           name: "Aw2🍔Burger",
-          mainColor: "#FB9400",
+          mainColor: "#FF0000",
           secondColor: "#00FF00"
         }
       break;
