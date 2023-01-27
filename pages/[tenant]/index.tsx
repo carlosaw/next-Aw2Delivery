@@ -1,3 +1,4 @@
+import { getCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
 import { Banner } from '../../components/Banner';
@@ -10,6 +11,7 @@ import { useApi } from '../../libs/useApi';
 import styles from '../../styles/Home.module.css';
 import { Product } from '../../types/Product';
 import { Tenant } from '../../types/Tenant';
+import { User } from '../../types/User';
 
 const Home = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
@@ -80,7 +82,9 @@ export default Home;
 // Validação do slug
 type Props = {
   tenant: Tenant;
-  products: Product[] 
+  products: Product[],
+  token: string,
+  user: User | null 
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
@@ -92,6 +96,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if(!tenant) {
     return { redirect: { destination: '/', permanent: false } }   
   }
+
+  // Get Logged User
+  const token = getCookie('token', context);
 
   // Get Products
   const products = await api.getAllProducts();

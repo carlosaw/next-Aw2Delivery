@@ -7,11 +7,14 @@ import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
 import { InputField } from '../../components/InputField';
 import { useAppContext } from '../../contexts/app';
+import { useAuthContext } from '../../contexts/auth';
 import { useApi } from '../../libs/useApi';
 import styles from '../../styles/Login.module.css';
 import { Tenant } from '../../types/Tenant';
 
 const Login = (data: Props) => {
+  const { setToken, setUser } = useAuthContext();
+
   const { tenant, setTenant } = useAppContext();
   useEffect(() => {
     setTenant(data.tenant);
@@ -23,7 +26,12 @@ const Login = (data: Props) => {
   const [password, setPassword] = useState('');
 
   function handleSubmit(): void {
-    
+    setToken('1234');
+    setUser({
+      name: 'Carlos',
+      email: 'carlos@gmail.com'
+    });
+    router.push(`/${data.tenant.slug}`);
   }
 
   function handleSignUp(): void {
@@ -106,11 +114,11 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
   //console.log('TENANT: ', tenantSlug);
-  const api = useApi();
+  const api = useApi(tenantSlug as string);
 
   // Get Tenant (identificando o tenant)
-  const tenant = await api.getTenant(tenantSlug as string);
-  if (!tenant) {
+  const tenant = await api.getTenant();
+  if(!tenant) {
     return { redirect: { destination: '/', permanent: false } }
   }
 

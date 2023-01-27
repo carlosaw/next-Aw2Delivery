@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useAuthContext } from '../../contexts/auth';
 import { Tenant } from '../../types/Tenant';
 import { Button } from '../Button';
@@ -11,7 +12,10 @@ type Props = {
 }
 
 export const Sidebar = ({tenant, open, onClose}: Props) => {
-  const { user} = useAuthContext();
+  const { user, setToken} = useAuthContext();
+
+  const router = useRouter();
+  
   return (
     <div className={styles.container}
       style={{
@@ -34,7 +38,7 @@ export const Sidebar = ({tenant, open, onClose}: Props) => {
               <Button 
                 color={tenant.mainColor}
                 label="Fazer Login"
-                onClick={() => {}}
+                onClick={() => router.push(`/${tenant.slug}/login`)}
                 fill
               />
             }
@@ -51,8 +55,48 @@ export const Sidebar = ({tenant, open, onClose}: Props) => {
             color={'#6A7D8B'}
             icon="menu"
             label="Cardápio"
-            onClick={() => {}}
+            onClick={onClose}
           />
+          <SidebarMenuItem 
+            color={'#6A7D8B'}
+            icon="cart"
+            label="Sacola"
+            onClick={() => router.push(`/${tenant.slug}/cart`)}
+          />
+          <SidebarMenuItem 
+            color={'#6A7D8B'}
+            icon="fav"
+            label="Favoritos"
+            onClick={() => {}}
+            disabled
+          />
+          <SidebarMenuItem 
+            color={'#6A7D8B'}
+            icon="order"
+            label="Meus Pedidos"
+            onClick={() => router.push(`/${tenant.slug}/orders`)}
+          />
+          <SidebarMenuItem 
+            color={'#6A7D8B'}
+            icon="config"
+            label="Configurações"
+            onClick={() => {}}
+            disabled
+          />
+        </div>
+        <div className={styles.menuButton}>
+          {user &&
+            <SidebarMenuItem 
+              color={'#6A7D8B'}
+              icon="logout"
+              label="Sair"
+              onClick={() => {
+                setToken('');
+                onClose();
+              }}
+            />
+          }
+          
         </div>
       </div>
     </div>

@@ -54,13 +54,20 @@
   font-size: 22px;
 }
 
-.line {margin: 78px 24px 0 24px;
+.line {
+  margin: 0 24px;
   border-bottom: 2px solid #E2E2E2;
   margin-top: -2px;
 }
 
 .menu {
   flex: 1;
+  padding: 25px 66px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menuButton {
   padding: 25px 66px;
   display: flex;
   flex-direction: column;
