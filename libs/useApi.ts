@@ -15,28 +15,27 @@ const TEMPORARYoneProduct: Product = {
   name: 'Texas Burger',
   price: 25.50,
   description: '2 Blends de carne de 150g, Queijo Cheddar, Bacon Caramelizado, Salada, Molho da casa, Pão brioche artesanal, '
-  
-  
+ 
 }
 
 export const useApi = () => ({
 
-  getTenant: (tenantSlug: string) => {
+  getTenant: async (tenantSlug?: string) => {
     switch(tenantSlug) {
       case 'aw2burger':
         return {
           slug: 'aw2burger',
           name: "Aw2🍔Burger",
-          mainColor: "#FF0000",
-          secondColor: "#00FF00"
+          mainColor: "#FB9400",
+          secondColor: "#FFF9F2"
         }
       break;
       case 'aw2pizza':
         return {
           slug: 'aw2pizza',
           name: "Aw2🍕Pizza",
-          mainColor: "#0000FF",
-          secondColor: "#FF0000"
+          mainColor: "#6AB70A",
+          secondColor: "#E0E0E0"
         }
       break;
       default: return false;
