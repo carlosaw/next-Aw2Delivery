@@ -1,5 +1,6 @@
 import { Product } from "../types/Product";
 import { Tenant } from "../types/Tenant";
+import { User } from "../types/User";
 
 export type getTenantResponse = {
   name: string;
@@ -18,9 +19,9 @@ const TEMPORARYoneProduct: Product = {
   
 }
 
-export const useApi = (tenantSlug: string) => ({
+export const useApi = () => ({
 
-  getTenant: async () => {
+  getTenant: (tenantSlug: string) => {
     switch(tenantSlug) {
       case 'aw2burger':
         return {
@@ -52,6 +53,15 @@ export const useApi = (tenantSlug: string) => ({
 
   getProduct: async (id: string) => {
     return TEMPORARYoneProduct;
-  }
+  },
+
+  authorizeToken: async ( token: string): Promise<User | false> => {
+    if(!token) return false;
+
+    return {
+      name: 'Alberto',
+      email: 'alberto@gmail.com'
+    }
+  } 
 
 });

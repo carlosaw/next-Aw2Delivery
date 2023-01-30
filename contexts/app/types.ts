@@ -2,7 +2,8 @@ import { Dispatch, ReactNode } from "react";
 import { Tenant } from "../../types/Tenant";
 
 export type DataType = {
-  tenant: Tenant | null; 
+  tenant: Tenant | null;
+  setTenant: (newTenant: Tenant) => void;
 }
 
 export type ActionType = {

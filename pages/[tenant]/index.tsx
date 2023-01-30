@@ -6,6 +6,7 @@ import ProductItem from '../../components/ProductItem';
 import SearchInput from '../../components/SearchInput';
 import { Sidebar } from '../../components/Sidebar';
 import { useAppContext } from '../../contexts/app';
+import { useAuthContext } from '../../contexts/auth';
 //import { useAuthContext } from '../../contexts/auth';
 import { useApi } from '../../libs/useApi';
 import styles from '../../styles/Home.module.css';
@@ -14,10 +15,13 @@ import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
 
 const Home = (data: Props) => {
+  const { setToken, setUser } = useAuthContext();
   const { tenant, setTenant } = useAppContext();
 
   useEffect(()=>{
     setTenant(data.tenant);
+    setToken(data.token);
+    if(data.user) setUser(data.user);
   }, []);
 
   const [products, setProducts] = useState<Product[]>(data.products);
@@ -82,23 +86,25 @@ export default Home;
 // Validação do slug
 type Props = {
   tenant: Tenant;
-  products: Product[],
-  token: string,
-  user: User | null 
+  products: Product[];
+  token: string;
+  user: User | null;
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
   //console.log('TENANT: ', tenantSlug);
-  const api = useApi(tenantSlug as string);
+  const api = useApi();
 
   // Get Tenant (identificando o tenant)
-  const tenant = await api.getTenant();
+  const tenant = await api.getTenant(tenantSlug as string);
   if(!tenant) {
     return { redirect: { destination: '/', permanent: false } }   
   }
 
   // Get Logged User
+  //const token = context.req.cookies.token;
   const token = getCookie('token', context);
+  const user = await api.authorizeToken(token as string);
 
   // Get Products
   const products = await api.getAllProducts();
@@ -106,7 +112,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       tenant,
-      products
+      products,
+      token,
+      user
     }
   }
 }
