@@ -15,9 +15,9 @@ const SearchInput = ({ onSearch }: Props) => {
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     //console.log(event.code);
-    if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+    //if (event.code === 'Enter' || event.code === 'NumpadEnter') {
       onSearch(searchValue);
-    }
+    //}
   }
 
   return (

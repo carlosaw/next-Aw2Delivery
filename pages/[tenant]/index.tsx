@@ -7,12 +7,12 @@ import SearchInput from '../../components/SearchInput';
 import { Sidebar } from '../../components/Sidebar';
 import { useAppContext } from '../../contexts/app';
 import { useAuthContext } from '../../contexts/auth';
-//import { useAuthContext } from '../../contexts/auth';
 import { useApi } from '../../libs/useApi';
 import styles from '../../styles/Home.module.css';
 import { Product } from '../../types/Product';
 import { Tenant } from '../../types/Tenant';
 import { User } from '../../types/User';
+import NoItemsIcon from '../../public/assets/noitems.svg';
 
 const Home = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
@@ -76,17 +76,44 @@ const Home = (data: Props) => {
         </div>
       </header>
 
-      <Banner />
+      {searchText &&
+        <>
+          <div className={styles.searchText}>
+            Procurando por: <strong>{searchText}</strong>
+          </div>
 
-      <div className={styles.grid}>
-        {products.map((item, index) => (
-          <ProductItem
-            key={index}
-            data={item}
-          />
-        ))}        
-      </div>
-
+          {filteredProducts.length > 0 &&
+            <div className={styles.grid}>
+              {filteredProducts.map((item, index) => (
+                <ProductItem
+                  key={index}
+                  data={item}
+                />
+              ))}        
+            </div>
+          }
+          {filteredProducts.length === 0 &&
+            <div className={styles.noProducts}>
+              <NoItemsIcon color="#E0E0E0" />
+              <div className={styles.noProductsText}>Ops!Não há ítens com este nome!</div>
+            </div>
+          }
+        </>
+      }
+      
+      {!searchText &&
+        <>
+          <Banner />
+          <div className={styles.grid}>
+            {products.map((item, index) => (
+              <ProductItem
+                key={index}
+                data={item}
+              />
+            ))}        
+          </div>
+        </>        
+      }
     </div>
   );
 }
