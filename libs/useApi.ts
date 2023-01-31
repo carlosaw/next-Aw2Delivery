@@ -45,7 +45,10 @@ export const useApi = () => ({
   getAllProducts: async () => {
     let products = [];
       for (let q = 0; q < 10; q++) {
-        products.push(TEMPORARYoneProduct);
+        products.push({
+          ...TEMPORARYoneProduct,
+          id: q + 1
+        });
       }
     return products;
   },

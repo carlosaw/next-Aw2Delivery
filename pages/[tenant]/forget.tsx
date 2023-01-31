@@ -31,7 +31,10 @@ const Forget = (data: Props) => {
         <title>Esqueci a senha | {data.tenant.name}</title>
       </Head>
 
-      <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}/login`} />
+      <Header
+        color={data.tenant.mainColor} 
+        backHref={`/${data.tenant.slug}/login`} 
+      />
 
       <div className={styles.header}>{data.tenant.name}</div>
 
@@ -77,10 +80,10 @@ type Props = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
   //console.log('TENANT: ', tenantSlug);
-  const api = useApi(tenantSlug as string);
+  const api = useApi();
 
   // Get Tenant (identificando o tenant)
-  const tenant = await api.getTenant();
+  const tenant = await api.getTenant(tenantSlug as string);
   if (!tenant) {
     return { redirect: { destination: '/', permanent: false } }
   }

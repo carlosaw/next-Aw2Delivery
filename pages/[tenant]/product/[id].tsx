@@ -1,5 +1,7 @@
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { Header } from '../../../components/Header';
@@ -8,6 +10,7 @@ import { useAppContext } from '../../../contexts/app';
 import { useApi } from '../../../libs/useApi';
 import { useFormatter } from '../../../libs/useFormatter';
 import styles from '../../../styles/Product-id.module.css';
+import { CartCookie } from '../../../types/CartCookie';
 import { Product } from '../../../types/Product';
 import { Tenant } from '../../../types/Tenant';
 
@@ -18,12 +21,35 @@ const Product = (data: Props) => {
     setTenant(data.tenant);
   }, []);
 
-  const [qtCount, setQtCount] = useState(1);
-
+  const router = useRouter();
   const formatter = useFormatter();
 
-  const handleAddToCart = () => {
+  const [qtCount, setQtCount] = useState(1);
 
+  const handleAddToCart = () => {
+    let cart: CartCookie[] = [];
+    // Create or get existing cart
+    if(hasCookie('cart')) {
+      const cartCookie = getCookie('cart');
+      const cartJson: CartCookie[] = JSON.parse(cartCookie as string);
+      for(let i in cartJson) {
+        if(cartJson[i].qt && cartJson[i].id) {
+          cart.push(cartJson[i]);
+        }
+      }
+      // search product in cart
+      const cartIndex = cart.findIndex(item => item.id === data.product.id);
+      if(cartIndex > -1) {
+        cart[cartIndex].qt += qtCount;
+      } else {
+        cart.push({ id: data.product.id, qt: qtCount });
+      }
+      // setting cookie
+      console.log(cart);
+      setCookie('cart', JSON.stringify(cart));
+
+      router.push(`/${data.tenant.slug}/cart`)
+    }
   }
 
   const handleUpdateQt = (newCount: number) => {
@@ -39,7 +65,7 @@ const Product = (data: Props) => {
       <div className={styles.headerArea}>
         <Header 
           color={data.tenant.mainColor}
-          backHref={`${data.tenant.slug}`}
+          backHref={`/${data.tenant.slug}`}
           title="Produto"
           invert
         />

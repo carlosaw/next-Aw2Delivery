@@ -44,7 +44,10 @@ const Login = (data: Props) => {
         <title>Login | {data.tenant.name}</title>
       </Head>
 
-      <Header color={data.tenant.mainColor} backHref={`/${data.tenant.slug}`} />
+      <Header
+        color={data.tenant.mainColor}
+        backHref={`/${data.tenant.slug}`}
+      />
 
       <div className={styles.header}>{data.tenant.name}</div>
 
