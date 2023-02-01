@@ -53,8 +53,8 @@ export const useApi = () => ({
     return products;
   },
 
-  getProduct: async (id: string) => {
-    return TEMPORARYoneProduct;
+  getProduct: async (id: number) => {
+    return { ...TEMPORARYoneProduct, id};
   },
 
   authorizeToken: async ( token: string): Promise<User | false> => {

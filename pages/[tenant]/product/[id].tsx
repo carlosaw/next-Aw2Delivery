@@ -17,7 +17,7 @@ import { Tenant } from '../../../types/Tenant';
 const Product = (data: Props) => {
   const { tenant, setTenant } = useAppContext();
 
-  useEffect(()=>{
+  useEffect(() => {
     setTenant(data.tenant);
   }, []);
 
@@ -37,19 +37,19 @@ const Product = (data: Props) => {
           cart.push(cartJson[i]);
         }
       }
-      // search product in cart
-      const cartIndex = cart.findIndex(item => item.id === data.product.id);
-      if(cartIndex > -1) {
-        cart[cartIndex].qt += qtCount;
-      } else {
-        cart.push({ id: data.product.id, qt: qtCount });
-      }
-      // setting cookie
-      console.log(cart);
-      setCookie('cart', JSON.stringify(cart));
-
-      router.push(`/${data.tenant.slug}/cart`)
     }
+    // search product in cart
+    const cartIndex = cart.findIndex(item => item.id === data.product.id);
+    if(cartIndex > -1) {
+      cart[cartIndex].qt += qtCount;
+    } else {
+      cart.push({ id: data.product.id, qt: qtCount });
+    }
+    //console.log(cart);
+    // setting cookie    
+    setCookie('cart', JSON.stringify(cart));
+    // going to cart
+    router.push(`/${data.tenant.slug}/cart`);
   }
 
   const handleUpdateQt = (newCount: number) => {
@@ -99,18 +99,18 @@ const Product = (data: Props) => {
         <div 
           className={styles.areaRight}
           style={{ color: data.tenant.mainColor}}
-        >{formatter.formatPrice(data.product.price)}</div>
+        >{formatter.formatPrice(data.product.price)}
+        </div>
       </div>
 
-      <div className={styles.buttonArea}>
+      <div className={styles.buttonArea}>        
         <Button 
           color={data.tenant.mainColor}
           label="Adicionar à sacola"
           onClick={handleAddToCart}
           fill
-        />
-      </div>
-      
+        />        
+      </div>      
     </div>
   );
 }
@@ -134,7 +134,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   // Get Product
-  const product = await api.getProduct(id as string);
+  const product = await api.getProduct(parseInt(id as string));
 
 
   return {
