@@ -52,10 +52,8 @@ const Cart = (data: Props) => {
 
       <div className={styles.productsQuantity}>x items</div>
 
-      <div className={styles.productsList}>
-        ...
-      </div>
-
+      <div className={styles.productsList}></div>
+        
       <div className={styles.shippingArea}>
         <div className={styles.shippingTitle}>Calcular frete e prazo</div>
         <div className={styles.shippingForm}>
@@ -72,7 +70,6 @@ const Cart = (data: Props) => {
             fill={false}
           />
         </div>
-
 
         <div className={styles.shippingInfo}>
           <div className={styles.shippingAddress}>Rua bla bla bla</div>
@@ -96,17 +93,16 @@ const Cart = (data: Props) => {
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Frete</div>
           <div className={styles.resumeRight}>{shippingPrice > 0 ? formatter.formatPrice(shippingPrice) : '--'}</div>
-        
-          <div className={styles.resumeLine}></div>
-          
+        </div>
+
+        <div className={styles.resumeLine}></div>
+
+        <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Total</div>
-          <div 
-            className={styles.resumeRightBig}
-            style={{ color: data.tenant.mainColor}}
-            >{formatter.formatPrice(shippingPrice + subtotal)}
-          </div>
+          <div className={styles.resumeRightBig} style={{ color: data.tenant.mainColor}}>{formatter.formatPrice(shippingPrice + subtotal)}</div>          
         </div>
       </div>
+
       <div className={styles.resumeButton}>
         <Button
           color={data.tenant.mainColor}
@@ -115,6 +111,7 @@ const Cart = (data: Props) => {
           fill
         />
       </div>        
+      
     </div>
   );
 }
