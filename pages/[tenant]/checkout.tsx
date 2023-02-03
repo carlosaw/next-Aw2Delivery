@@ -35,33 +35,14 @@ const Checkout = (data: Props) => {
 
   // Product Control
   const [cart, setCart] = useState<CartItem[]>(data.cart);
-  const handleCartChange = (newCount: number, id: number) => {
-    const tmpCart: CartItem[] = [...cart];
-    const cartIndex = tmpCart.findIndex(item => item.product.id === id);
-    if(newCount > 0) {
-      tmpCart[cartIndex].qt = newCount;
-    } else {
-      delete tmpCart[cartIndex];
-    }
-    let newCart: CartItem[] = tmpCart.filter(item => item);
-    setCart(newCart);
-
-    // Update cookie
-    let cartCookie: CartCookie[] = [];
-    for(let i in newCart) {
-      cartCookie.push({
-        id: newCart[i].product.id,
-        qt: newCart[i].qt
-      });
-    }
-    setCookie('cart', JSON.stringify(cartCookie));
-  }
+  
 
   // Shipping
   const [shippingPrice, setShippingPrice] = useState(0);
   const [shippingAddress, setShippingAddress] = useState<Address>();
   const handleChangeAddress = () => {
-    //router.push(`/${data.tenant.slug}/myaddresses`);
+    router.push(`/${data.tenant.slug}/myaddresses`);
+    /*
     setShippingAddress({
       id: 1,
       cep: '999999-99',
@@ -71,9 +52,25 @@ const Checkout = (data: Props) => {
       city: 'São Paulo',
       state: 'SP'
     });
+    */
     setShippingPrice(9.50);
   }
-  
+
+  // Payments
+  const [paymentType, setPaymentType] = useState<'money' | 'card'>('money');
+  const [paymentChange, setPaymentChange] = useState(0);
+
+  // Cupom
+  const [cupom, setCupom] = useState('');
+  const [cupomDiscount, setCupomDiscount] = useState(0);
+  const [cupomInput, setCupomInput] = useState('');
+  const handleSetCupom = () => {
+    if(cupomInput) {
+      setCupom(cupomInput);
+      setCupomDiscount(15.2);
+    }
+  }
+
   // Resume 
   const [subtotal, setSubtotal] = useState(0);
   useEffect(()=>{
@@ -121,8 +118,8 @@ const Checkout = (data: Props) => {
                   color={data.tenant.mainColor}
                   leftIcon='money'
                   value="Dinheiro"
-                  onClick={() => {}}
-                  fill
+                  onClick={() => setPaymentType('money')}
+                  fill={paymentType === 'money'}
                 />
               </div>
               <div className={styles.paymentBtn}>
@@ -130,34 +127,57 @@ const Checkout = (data: Props) => {
                   color={data.tenant.mainColor}
                   leftIcon='card'
                   value="Cartão"
-                  onClick={() => {}}
+                  onClick={() => setPaymentType('card')}
+                  fill={paymentType === 'card'}
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className={styles.infoArea}>
-          <div className={styles.infoTitle}>Troco</div>
-          <div className={styles.infoBody}>
-            <InputField
-              color={data.tenant.mainColor}
-              placeholder="Quanto você tem em dinheiro?"
-              value={""}
-              onChange={newValue => { }}
-            />
+        {paymentType === 'money' &&
+          <div className={styles.infoArea}>
+            <div className={styles.infoTitle}>Troco</div>
+            <div className={styles.infoBody}>
+              <InputField
+                color={data.tenant.mainColor}
+                placeholder="Quanto você tem em dinheiro?"
+                value={paymentChange ? paymentChange.toString() : ''}
+                onChange={newValue => setPaymentChange(parseInt(newValue))}
+              />
+            </div>
           </div>
-        </div>
+        }
+        
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de desconto</div>
           <div className={styles.infoBody}>
-            <ButtonWithIcon
-              color={data.tenant.mainColor}
-              leftIcon="cupom"
-              rightIcon="checked"
-              value="TESTE 123"
-            />
+            {cupom &&
+              <ButtonWithIcon
+                color={data.tenant.mainColor}
+                leftIcon="cupom"
+                rightIcon="checked"
+                value={cupom.toUpperCase()}
+              />
+            }
+            {!cupom &&
+              <div className={styles.cupomInput}>
+                <InputField
+                  color={data.tenant.mainColor}
+                  placeholder="Tem um cupom?"
+                  value={cupomInput}
+                  onChange={newValue => setCupomInput(newValue)}
+                />
+                <Button
+                  color={data.tenant.mainColor}
+                  label="OK"
+                  onClick={handleSetCupom}
+                  fill={false}
+                />
+              </div>
+            }
           </div>
         </div>
+        
       </div>
 
       <div className={styles.productsQuantity}>{cart.length} {cart.length === 1 ? 'item' : 'itens'}</div>
@@ -169,7 +189,7 @@ const Checkout = (data: Props) => {
             color={data.tenant.mainColor}
             quantity={cartItem.qt}
             product={cartItem.product}
-            onChange={handleCartChange}
+            onChange={() => {}}
             noEdit
           />
         ))}
@@ -180,7 +200,14 @@ const Checkout = (data: Props) => {
           <div className={styles.resumeLeft}>Subtotal</div>
           <div className={styles.resumeRight}><strong>{formatter.formatPrice(subtotal)}</strong></div>
         </div>
-      
+
+        {cupomDiscount > 0 &&
+          <div className={styles.resumeItem}>
+            <div className={styles.resumeLeft}>Desconto</div>
+            <div className={styles.resumeRight}><strong>- {formatter.formatPrice(cupomDiscount)}</strong></div>
+          </div>
+        }
+
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Frete</div>
           <div className={styles.resumeRight}>{shippingPrice > 0 ? formatter.formatPrice(shippingPrice) : '--'}</div>
@@ -190,7 +217,7 @@ const Checkout = (data: Props) => {
 
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Total</div>
-          <div className={styles.resumeRightBig} style={{ color: data.tenant.mainColor}}>{formatter.formatPrice(shippingPrice + subtotal)}</div>          
+          <div className={styles.resumeRightBig} style={{ color: data.tenant.mainColor}}>{formatter.formatPrice(subtotal - cupomDiscount + shippingPrice)}</div>          
         </div>
       </div>
 

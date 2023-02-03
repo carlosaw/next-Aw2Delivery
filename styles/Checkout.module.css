@@ -29,17 +29,11 @@
   flex: 1;
 }
 
-.infoBody {
-
+.cupomInput {
+  display: flex;
+  gap: 14px;
 }
             
-
-
-
-
-
-
-
 .productsQuantity {
   border-top: 2px solid rgba(27, 27, 27, .1);
   border-bottom: 2px solid rgba(27, 27, 27, .1);
