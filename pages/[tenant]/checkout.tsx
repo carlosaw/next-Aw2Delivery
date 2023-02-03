@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { CartProductItem } from '../../components/CartProductItem';
 import { CartCookie } from '../../types/CartCookie';
 import { ButtonWithIcon } from '../../components/ButtonWithIcon';
+import { Address } from '../../types/Address';
 
 const Checkout = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
@@ -57,15 +58,20 @@ const Checkout = (data: Props) => {
   }
 
   // Shipping
-  const [shippingInput, setShippingInput] = useState('');
-  const [shippingAddress, setShippingAddress] = useState('');
   const [shippingPrice, setShippingPrice] = useState(0);
-  const [shippingTime, setShippingTime] = useState(0);
-  
-  const handleShippingCalc = () => {
-    setShippingAddress('Rua bla bla bla');
+  const [shippingAddress, setShippingAddress] = useState<Address>();
+  const handleChangeAddress = () => {
+    //router.push(`/${data.tenant.slug}/myaddresses`);
+    setShippingAddress({
+      id: 1,
+      cep: '999999-99',
+      street: 'Rua das Flores',
+      number: '321',
+      neighborhood: 'Jardins',
+      city: 'São Paulo',
+      state: 'SP'
+    });
     setShippingPrice(9.50);
-    setShippingTime(20);
   }
   
   // Resume 
@@ -78,7 +84,7 @@ const Checkout = (data: Props) => {
     setSubtotal(sub);
   }, [cart]);
   const handleFinish = () => {
-    router.push(`/${data.tenant.slug}/checkout`);
+    //router.push(`/${data.tenant.slug}/checkout`);
   }
 
   return (
@@ -100,35 +106,59 @@ const Checkout = (data: Props) => {
               color={data.tenant.mainColor}
               leftIcon={"location"}
               rightIcon={"rightArrow"}
-              value={"Rua bla bla bla, 111"}
-              onClick={() => {}}
+              value={shippingAddress ? `${shippingAddress.street}, ${shippingAddress.number}
+               - ${shippingAddress.city}` : 'Escolha um endereço'}
+              onClick={handleChangeAddress}
             />
           </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Tipo de Pagamento</div>
           <div className={styles.infoBody}>
-            ...
+            <div className={styles.paymentTypes}>
+              <div className={styles.paymentBtn}>
+                <ButtonWithIcon
+                  color={data.tenant.mainColor}
+                  leftIcon='money'
+                  value="Dinheiro"
+                  onClick={() => {}}
+                  fill
+                />
+              </div>
+              <div className={styles.paymentBtn}>
+                <ButtonWithIcon
+                  color={data.tenant.mainColor}
+                  leftIcon='card'
+                  value="Cartão"
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Troco</div>
           <div className={styles.infoBody}>
-            ...
+            <InputField
+              color={data.tenant.mainColor}
+              placeholder="Quanto você tem em dinheiro?"
+              value={""}
+              onChange={newValue => { }}
+            />
           </div>
         </div>
         <div className={styles.infoArea}>
           <div className={styles.infoTitle}>Cupom de desconto</div>
           <div className={styles.infoBody}>
-            ...
+            <ButtonWithIcon
+              color={data.tenant.mainColor}
+              leftIcon="cupom"
+              rightIcon="checked"
+              value="TESTE 123"
+            />
           </div>
         </div>
       </div>
-
-
-
-
-
 
       <div className={styles.productsQuantity}>{cart.length} {cart.length === 1 ? 'item' : 'itens'}</div>
 
@@ -140,41 +170,9 @@ const Checkout = (data: Props) => {
             quantity={cartItem.qt}
             product={cartItem.product}
             onChange={handleCartChange}
+            noEdit
           />
         ))}
-      </div>
-      
-      <div className={styles.shippingArea}>
-        <div className={styles.shippingTitle}>Calcular frete e prazo</div>
-        <div className={styles.shippingForm}>
-          <InputField 
-            color={data.tenant.mainColor}
-            placeholder="Digite seu CEP"
-            value={shippingInput}
-            onChange={newValue => setShippingInput(newValue)}
-          />
-          <Button
-            color={data.tenant.mainColor}
-            label="OK"
-            onClick={handleShippingCalc}
-            fill={false}
-          />
-        </div>
-
-        {shippingTime > 0 &&
-          <div className={styles.shippingInfo}>
-            <div className={styles.shippingAddress}>{shippingAddress}</div>
-            <div className={styles.shippingTime}>
-              <div className={styles.shippingTimeText}>Receba em até {shippingTime} minutos</div>
-              <div 
-                className={styles.shippingPrice}
-                style={{color: data.tenant.mainColor}}
-                > {formatter.formatPrice(shippingPrice)}
-              </div>
-            </div>
-          </div>
-        }
-
       </div>
 
       <div className={styles.resumeArea}>
@@ -199,9 +197,10 @@ const Checkout = (data: Props) => {
       <div className={styles.resumeButton}>
         <Button
           color={data.tenant.mainColor}
-          label="Continuar"
+          label="Finalizar Pedido"
           onClick={handleFinish}
           fill
+          disabled={!shippingAddress}
         />
       </div>        
       

@@ -7,8 +7,9 @@ type Props = {
   quantity: number;
   product: Product;
   onChange: (newCount: number, id: number) => void;
+  noEdit?: boolean;
 }
-export const CartProductItem = ({ color, quantity, product, onChange}: Props) => {
+export const CartProductItem = ({ color, quantity, product, onChange, noEdit}: Props) => {
 
   const formatter = useFormatter();
 
@@ -26,13 +27,21 @@ export const CartProductItem = ({ color, quantity, product, onChange}: Props) =>
         >{formatter.formatPrice(product.price)}</div>
       </div>
       <div className={styles.qtControl}>
-        <Quantity 
-          color={color}
-          count={quantity}
-          onUpdateCount={(newCount: number) => onChange(newCount, product.id)}
-          min={0}
-          small
-        />
+        {noEdit &&
+          <div className={styles.qtArea}>
+            <div className={styles.qtTitle} style={{ color }}>Qtde.</div>
+            <div className={styles.qtCount} style={{ color }}>{quantity}</div>
+          </div>
+        }
+        {!noEdit &&
+          <Quantity 
+            color={color}
+            count={quantity}
+            onUpdateCount={(newCount: number) => onChange(newCount, product.id)}
+            min={0}
+            small
+          />
+        }
       </div>
     </div>
   );
