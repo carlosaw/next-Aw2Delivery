@@ -19,6 +19,7 @@ import { CartProductItem } from '../../components/CartProductItem';
 import { CartCookie } from '../../types/CartCookie';
 import { ButtonWithIcon } from '../../components/ButtonWithIcon';
 import { Address } from '../../types/Address';
+import { AddressItem } from '../../components/AddressItem';
 
 const MyAddresses = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
@@ -37,6 +38,16 @@ const MyAddresses = (data: Props) => {
     router.push(`/${data.tenant.slug}/address`);
   }
 
+  const handleAddressSelect = (address: Address) => {
+    console.log(`Selecionou o endereço: ${address.street}, ${address.number}`)
+  }
+  const handleAddressEdit = (id: number) => {
+    
+  }
+  const handleAddressDelete = (id: number) => {
+    
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -49,7 +60,16 @@ const MyAddresses = (data: Props) => {
       />
 
       <div className={styles.list}>
-
+        {data.addresses.map((item, index) => (
+          <AddressItem
+            key={index}
+            color={data.tenant.mainColor}
+            address={item}
+            onSelect={handleAddressSelect}
+            onEdit={handleAddressEdit}
+            onDelete={handleAddressDelete}
+          />
+        ))}
       </div>
 
       <div className={styles.btnArea}>
@@ -72,7 +92,7 @@ type Props = {
   tenant: Tenant;
   token: string;
   user: User | null;
-  cart: CartItem[];
+  addresses: Address[];
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { tenant: tenantSlug } = context.query;
@@ -89,17 +109,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   //const token = context.req.cookies.token;
   const token = getCookie('token', context);
   const user = await api.authorizeToken(token as string);
+  if(!user) {
+    return { redirect: { destination: '/login', permanent: false } }
+  }
 
-  // Get Cart Products
-  const cartCookie = getCookie('cart', context);
-  //console.log("CART", cartCookie);
-  const cart = await api.getCartProducts(cartCookie as string);
+  // Get Addresses from Logged User
+  const addresses = await api.getUserAddresses(user.email);
+
   return {
     props: {
       tenant,
       token,
       user,
-      cart
+      addresses
     }
   }
 }

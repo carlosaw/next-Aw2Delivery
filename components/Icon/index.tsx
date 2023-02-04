@@ -5,7 +5,7 @@ import Location from './location.svg';
 import MailSent from './mailSent.svg';
 import Money from './money.svg';
 import RightArrow from './rightArrow.svg';
-
+import Dots from './dots.svg';
 
 
 type Props = {
@@ -25,6 +25,7 @@ export const Icon = ({ width, height, svg, color }: Props) => {
       {svg === 'mailSent' && <MailSent color={color} />}
       {svg === 'money' && <Money color={color} />}
       {svg === 'rightArrow' && <RightArrow color={color} />}
+      {svg === 'dots' && <Dots color={color} />}
     </div>
   );
 }
