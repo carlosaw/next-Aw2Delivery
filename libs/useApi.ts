@@ -92,7 +92,7 @@ export const useApi = () => ({
   getUserAddresses: async (email: string) => {
     const addresses: Address[] = [];
 
-    for(let i = 0; i < 4; i++) {
+    for(let i = 0; i < 8; i++) {
       addresses.push({
         id: i + 1,
         street: 'Rua das Flores',
@@ -105,6 +105,10 @@ export const useApi = () => ({
     }
 
     return addresses;
+  },
+
+  getShippingPrice: async (address: Address) => {
+    return 9.16;
   }
 
 });

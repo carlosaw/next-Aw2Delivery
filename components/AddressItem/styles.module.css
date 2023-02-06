@@ -25,3 +25,34 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.menuIcon {
+  background-color: #FFF;
+  padding-left: 24px;
+}
+
+.popup {
+  position: absolute;
+  right: 24px;
+  background-color: #FFF;
+  border: 2px solid #F9F9Fb;
+  box-shadow: opx 16px 40px rgba(0, 0, 0, .08);
+  padding: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popupItem {
+  display: flex;
+  align-items: center;
+}
+
+.popupIcon {}
+
+.popupText {
+  margin-left: 19px;
+  font-weight: 400px;
+  font-size: 16px;
+  color: #1B1B1B;
+}

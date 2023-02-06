@@ -23,7 +23,7 @@ import { AddressItem } from '../../components/AddressItem';
 
 const MyAddresses = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
-  const { tenant, setTenant } = useAppContext();
+  const { tenant, setTenant, setShippingAddress, setShippingPrice } = useAppContext();
 
   useEffect(()=>{
     setTenant(data.tenant);
@@ -33,20 +33,41 @@ const MyAddresses = (data: Props) => {
 
   const formatter = useFormatter();
   const router = useRouter();
+  const api = useApi();
 
-  const handleNewAddress = () => {
-    router.push(`/${data.tenant.slug}/address`);
-  }
-
-  const handleAddressSelect = (address: Address) => {
-    console.log(`Selecionou o endereço: ${address.street}, ${address.number}`)
+  const handleAddressSelect = async (address: Address) => {
+    const price = await api.getShippingPrice(address);
+    if(price) {
+      // Salvar no contexto: // Endereço e frete
+      setShippingAddress(address);
+      setShippingPrice(price);      
+      router.push(`/${data.tenant.slug}/checkout`);
+    }
+    //console.log(`Selecionou o endereço: ${address.street}, ${address.number}`)
   }
   const handleAddressEdit = (id: number) => {
-    
+    router.push(`/${data.tenant.slug}/address/${id}`);
   }
   const handleAddressDelete = (id: number) => {
-    
+    console.log(`Deletando o ${id}`);
   }
+  const handleNewAddress = () => {
+    router.push(`/${data.tenant.slug}/address/new`);
+  }
+
+  // Menu Events
+  const [menuOpened, setMenuOpened] = useState(0);
+  const handleMenuEvent = (event: MouseEvent) => {
+    const tagName = (event.target as Element).tagName;
+    if(!['path', 'svg'].includes(tagName)) {
+      setMenuOpened(0);
+    }
+  }
+  useEffect(() => {
+    window.removeEventListener('click', handleMenuEvent);
+    window.addEventListener('click', handleMenuEvent);
+    return () => window.removeEventListener('click', handleMenuEvent);
+  }, [menuOpened]);
 
   return (
     <div className={styles.container}>
@@ -68,6 +89,8 @@ const MyAddresses = (data: Props) => {
             onSelect={handleAddressSelect}
             onEdit={handleAddressEdit}
             onDelete={handleAddressDelete}
+            menuOpened={menuOpened}
+            setMenuOpened={setMenuOpened}
           />
         ))}
       </div>

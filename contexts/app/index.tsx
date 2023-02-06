@@ -1,11 +1,14 @@
 import { createContext, useReducer } from 'react';
 import { ContextType, DataType, ProviderType } from './types';
 import { reducer } from './reducer';
+import Tenant from '../../pages/[tenant]';
 
 export { useAppContext } from './hook';
 
 const initialState: DataType = {
-  tenant: null
+  tenant: null,
+  shippingAddress: null,
+  shippingPrice: 0
 }
 
 export const AppContext = createContext<ContextType>({

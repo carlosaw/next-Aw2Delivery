@@ -22,7 +22,7 @@ import { Address } from '../../types/Address';
 
 const Checkout = (data: Props) => {
   const { setToken, setUser } = useAuthContext();
-  const { tenant, setTenant } = useAppContext();
+  const { tenant, setTenant, shippingAddress, shippingPrice} = useAppContext();
 
   useEffect(()=>{
     setTenant(data.tenant);
@@ -38,22 +38,8 @@ const Checkout = (data: Props) => {
   
 
   // Shipping
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [shippingAddress, setShippingAddress] = useState<Address>();
   const handleChangeAddress = () => {
     router.push(`/${data.tenant.slug}/myaddresses`);
-    /*
-    setShippingAddress({
-      id: 1,
-      cep: '999999-99',
-      street: 'Rua das Flores',
-      number: '321',
-      neighborhood: 'Jardins',
-      city: 'São Paulo',
-      state: 'SP'
-    });
-    */
-    setShippingPrice(9.50);
   }
 
   // Payments
@@ -198,13 +184,13 @@ const Checkout = (data: Props) => {
       <div className={styles.resumeArea}>
         <div className={styles.resumeItem}>
           <div className={styles.resumeLeft}>Subtotal</div>
-          <div className={styles.resumeRight}><strong>{formatter.formatPrice(subtotal)}</strong></div>
+          <div className={styles.resumeRight}>{formatter.formatPrice(subtotal)}</div>
         </div>
 
         {cupomDiscount > 0 &&
           <div className={styles.resumeItem}>
             <div className={styles.resumeLeft}>Desconto</div>
-            <div className={styles.resumeRight}><strong>- {formatter.formatPrice(cupomDiscount)}</strong></div>
+            <div className={styles.resumeRight}>- {formatter.formatPrice(cupomDiscount)}</div>
           </div>
         }
 
