@@ -107,6 +107,11 @@ export const useApi = () => ({
     return addresses;
   },
 
+  addUserAddress: async ( address: Address) => {
+    //console.log(address);
+    return { ...address, id: 9};
+  },
+
   getShippingPrice: async (address: Address) => {
     return 9.16;
   }

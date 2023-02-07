@@ -35,6 +35,8 @@ const NewAddress = (data: Props) => {
   const router = useRouter();
   const api = useApi();
 
+  const [errorFields, setErrorFields] = useState<string[]>([]);
+
   const [addressCep, setAddressCep] = useState<string>('');
   const [addressStreet, setAddressStreet] = useState<string>('');
   const [addressNumber, setAddressNumber] = useState<string>('');
@@ -42,10 +44,60 @@ const NewAddress = (data: Props) => {
   const [addressCity, setAddressCity] = useState<string>('');
   const [addressState, setAddressState] = useState<string>('');
   const [addressComplement, setAddressComplement] = useState<string>('');
+  
+
+  const verifyAddress = () => {
+    let newErrorFields = [];
+    let approved = true;
+
+    if(addressCep.replaceAll(/[^0-9]/g, '').length !== 9) {
+      newErrorFields.push('cep');
+      approved=false;
+    }
+    if(addressStreet.length <= 2) {
+      newErrorFields.push('street');
+      approved=false;
+    }
+    if(addressNeighborhood.length <= 2) {
+      newErrorFields.push('neighborhood');
+      approved=false;
+    }
+
+    if(addressCity.length <= 2) {
+      newErrorFields.push('city');
+      approved=false;
+    }
+    if(addressState.length !== 2) {
+      newErrorFields.push('state');
+      approved=false;
+    }
+
+    setErrorFields(newErrorFields);
+    return approved;
+  }
 
 
-  const handleNewAddress = () => {
-    router.push(`/${data.tenant.slug}/address/new`);
+  const handleNewAddress = async () => {
+    if(verifyAddress()) {
+      let address: Address = {
+        id: 0,
+        cep: addressCep,
+        street: addressStreet,
+        number: addressNumber,
+        neighborhood: addressNeighborhood,
+        city: addressCity,
+        state: addressState,
+        complement: addressComplement
+      }
+      let newAddress = await api.addUserAddress(address);
+      if(newAddress.id > 0) {
+        router.push(`/${data.tenant.slug}/myaddresses`);
+      } else {
+        alert('Ocorreu um erro! Tente mais tarde.')
+      }
+    }
+    
+    
   }
 
   return (
@@ -54,7 +106,7 @@ const NewAddress = (data: Props) => {
         <title>Novo Endereço | {data.tenant.name}</title>
       </Head>
       <Header 
-        backHref={`/${data.tenant.slug}/checkout`} 
+        backHref={`/${data.tenant.slug}/myaddresses`} 
         color={data.tenant.mainColor}
         title="Novo Endereço" 
       />
@@ -68,6 +120,7 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite seu Cep"
                 value={addressCep}
                 onChange={value => setAddressCep(value)}
+                warning={errorFields.includes('cep')}
               />
           </div>
         </div>
@@ -80,6 +133,7 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite uma Rua"
                 value={addressStreet}
                 onChange={value => setAddressStreet(value)}
+                warning={errorFields.includes('street')}
               />
           </div>
           <div className={styles.column}>
@@ -89,6 +143,7 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite um Número"
                 value={addressNumber}
                 onChange={value => setAddressNumber(value)}
+                warning={errorFields.includes('number')}
               />
           </div>
         </div>
@@ -101,6 +156,7 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite seu Bairro"
                 value={addressNeighborhood}
                 onChange={value => setAddressNeighborhood(value)}
+                warning={errorFields.includes('neighborhood')}
               />
           </div>
         </div>
@@ -113,18 +169,20 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite sua Cidade"
                 value={addressCity}
                 onChange={value => setAddressCity(value)}
+                warning={errorFields.includes('city')}
               />
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.column}>
-            <div className={styles.label}>Estadoe</div>
+            <div className={styles.label}>Estado</div>
               <InputField
                 color={data.tenant.mainColor}
                 placeholder="Digite seu Estado"
                 value={addressState}
                 onChange={value => setAddressState(value)}
+                warning={errorFields.includes('state')}
               />
           </div>
         </div>
@@ -137,6 +195,7 @@ const NewAddress = (data: Props) => {
                 placeholder="Digite o complemento"
                 value={addressComplement}
                 onChange={value => setAddressComplement(value)}
+                warning={errorFields.includes('complement')}
               />
           </div>
         </div>
