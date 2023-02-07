@@ -1,5 +1,6 @@
 import { Address } from "../types/Address";
 import { CartItem } from "../types/CartItem";
+import { Order } from "../types/Order";
 import { Product } from "../types/Product";
 import { Tenant } from "../types/Tenant";
 import { User } from "../types/User";
@@ -18,6 +19,10 @@ const TEMPORARYoneProduct: Product = {
   price: 25.50,
   description: '2 Blends de carne de 150g, Queijo Cheddar, Bacon Caramelizado, Salada, Molho da casa, Pão brioche artesanal, '
  
+}
+
+const TEMPORARYorder: Order = {
+  
 }
 
 export const useApi = () => ({
@@ -92,7 +97,7 @@ export const useApi = () => ({
   getUserAddresses: async (email: string) => {
     const addresses: Address[] = [];
 
-    for(let i = 0; i < 8; i++) {
+    for(let i = 0; i < 4; i++) {
       addresses.push({
         id: i + 1,
         street: 'Rua das Flores',
@@ -107,13 +112,43 @@ export const useApi = () => ({
     return addresses;
   },
 
+  getUserAddress: async (addressid: number) => {
+    let address: Address = {
+      id: addressid,
+      street: 'Rua das Flores',
+      number: `${addressid}00`,
+      cep: '999999999',
+      city: 'São Paulo',
+      neighborhood: 'Jardins',
+      state: 'SP'
+    }
+    return address;
+  },
+
   addUserAddress: async ( address: Address) => {
     //console.log(address);
     return { ...address, id: 9};
   },
 
+  editUserAddress: async (newAddressData: Address) => {
+    return true;
+  },
+  deleteUserAddress: async (addressid: number) => {
+    return true;
+  },
+
   getShippingPrice: async (address: Address) => {
     return 9.16;
+  },
+
+  setOrder: async (
+    address: Address,
+    paymentType: 'money' | 'card',
+    paymentChange: number,
+    cupom: string,
+    cart: CartItem[]
+  ) => {
+    return TEMPORARYorder;
   }
 
 });
