@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAppContext } from '../../../contexts/app';
 import { useAuthContext } from '../../../contexts/auth';
 import { useApi } from '../../../libs/useApi';
-import styles from '../../../styles/Checkout.module.css';
+import styles from '../../../styles/Order-id.module.css';
 import { Product } from '../../../types/Product';
 import { Tenant } from '../../../types/Tenant';
 import { User } from '../../../types/User';
@@ -34,6 +34,38 @@ const OrderID = (data: Props) => {
   const formatter = useFormatter();
   const router = useRouter();
 
+  useEffect(() => {
+    if(data.order.status !== 'delivered') {
+      setTimeout(() => {
+        router.reload();
+      }, 60000); // 60 segundos
+    }
+  }, []);
+
+  const orderStatusList = {
+    preparing: {
+      label: 'Preparando',
+      longLabel: 'Preparando o seu pedido...',
+      backGroundColor: '#FEFAE6',
+      fontColor: '#D4BC34',
+      pct: 25
+    },
+    sent: {
+      label: 'Enviado',
+      longLabel: 'Enviamos o seu pedido...',
+      backGroundColor: '#F1F3F8',
+      fontColor: '#758CBD',
+      pct: 75
+    },
+    delivered: {
+      label: 'Entrege',
+      longLabel: 'Seu pedido foi entregue',
+      backGroundColor: '#F1F8F6',
+      fontColor: '#6AB70A',
+      pct: 100
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -44,6 +76,60 @@ const OrderID = (data: Props) => {
         color={data.tenant.mainColor}
         title={`Pedido #${data.order.id}`}
       />
+
+      {data.order.status !== 'delivered' &&
+        <div 
+          className={styles.statusArea}
+          style={{ backgroundColor: orderStatusList[data.order.status].backGroundColor }}
+        >
+          <div 
+            className={styles.statusLongLabe}
+            style={{ color: orderStatusList[data.order.status].fontColor }}
+          >{orderStatusList[data.order.status].longLabel}
+          </div>
+          <div className={styles.statusPct}>
+            <div 
+              className={styles.statusPctBar}
+              style={{
+                width: `${orderStatusList[data.order.status].pct}%`,
+                backgroundColor: orderStatusList[data.order.status].fontColor
+              }}
+            ></div>
+          </div>
+          <div className={styles.statusMsg}>Aguardando mudança de status</div>
+        </div>
+      } 
+
+      <div className={styles.orderInfoArea}>
+        <div 
+          className={styles.orderInfoStatus}
+          style={{
+            backgroundColor: orderStatusList[data.order.status].backGroundColor, 
+            color: orderStatusList[data.order.status].fontColor,
+          }}>          
+        
+          {orderStatusList[data.order.status].label}  
+        </div>
+        <div className={styles.orderInfoQt}>
+          {data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}
+        </div>
+        <div className={styles.orderInfoDate}>
+          {formatter.formatDate(data.order.orderDate)}
+        </div>
+      </div>
+
+      <div className={styles.productsList}>
+        {data.order.products.map((cartItem, index) => (
+          <CartProductItem
+            key={index}
+            color={data.tenant.mainColor}
+            quantity={cartItem.qt}
+            product={cartItem.product}
+            onChange={() => { }}
+            noEdit
+          />
+        ))}
+      </div>
 
       <div className={styles.infoGroup}>
         <div className={styles.infoArea}>
@@ -113,20 +199,7 @@ const OrderID = (data: Props) => {
         }
       </div>
 
-      <div className={styles.productsQuantity}>{data.order.products.length} {data.order.products.length === 1 ? 'item' : 'itens'}</div>
-
-      <div className={styles.productsList}>
-        {data.order.products.map((cartItem, index) => (
-          <CartProductItem
-            key={index}
-            color={data.tenant.mainColor}
-            quantity={cartItem.qt}
-            product={cartItem.product}
-            onChange={() => { }}
-            noEdit
-          />
-        ))}
-      </div>
+      
 
       <div className={styles.resumeArea}>
         <div className={styles.resumeItem}>

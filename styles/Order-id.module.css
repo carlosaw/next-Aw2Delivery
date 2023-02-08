@@ -1,90 +1,191 @@
 .container {
   background-color: #FFF;
+  padding: 50px 24px;
 }
 
-.headerArea {
-  position: absolute;
-  left: 24px;
-  top: 64px;
-  right: 24px;
+.statusArea {
+  margin-top: 21px;
+  padding: 27px 23px;
+  border-radius: 4px;
 }
 
-.headerBg {
-  height: 350px;
-  background-color: #333;
-  background-image: url('/assets/product-bg.png');
-  background-position: top center;
-  background-repeat: no-repeat;
-}
-
-.productImage {
-  text-align: center;
-  margin-top: -250px;
-}
-
-.productImage img {
-  width: auto;
-  height: 350px;
-}
-
-.category {
-  font-weight: 500;
-  font-size: 16px;
-  color: #1B1B1B;
-  margin: 0 24px;
-}
-
-.title {
+.statusLongLabel {
   font-weight: 600;
-  font-size: 40px;
-  line-height: 48px;
-  color: #1B1B1B;
-  margin: 0 24px;
-  padding-bottom: 24px;
-  border-bottom: 2px solid #000;
-  width: fit-content;
-  position: relative;
-}
-
-.line {
-  border-top: 2px solid #E2E2E2;
-  margin: -2px 24px 0px 24px;
-}
-
-.description {
-  font-weight: 400;
   font-size: 16px;
-  line-height: 24px;
-  color: rgba(27, 27, 27, .5);
-  margin: 24px;
+  line-height: 19px;
 }
 
-.qtText {
+.statusPct {
+  margin-top: 16px;
+  height: 8px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, .1);
+}
+
+.statusPctBar {
+  height: inherit;
+  border-radius: 8px;
+}
+
+.statusPctMsg {
+  margin-top: 8px;
   font-weight: 400;
-  font-size: 16px;
-  color: #1B1B1B;
-  margin: 0 24px 16px 24px;
+  font-size: 10px;
+  color: rgba(0, 0, 0, .7);
 }
 
-.area {
-  margin: 0 24px;
+.orderInfoArea {
   display: flex;
   align-items: center;
+  border-bottom: 2px solid rgba(27, 27, 27, .1);
+  padding: 15px 0px;
 }
 
-.areaLeft {
-
+.orderInfoStatus {
+  font-weight: 600px;
+  font-size: 11px;
+  padding: 6px 17px;
+  border: 1px solid #CCC;
+  border-radius: 4px;
 }
 
-.areaRight {
-  flex: 1;
+.orderInfoQt {
+  font-weight: 400;
+  font-size: 16px;
+  padding: 0px 19px;
+}
+
+.orderInfoDate {
   text-align: right;
-  font-weight: 600;
-  font-size: 40px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #B3B3B3;
+  flex: 1;
+}
+
+.infoGroup {
+  border-top: 2px solid rgba(27, 27, 27, .1);
+  margin-bottom: 40px;
+}
+
+.infoArea {
+  padding-top: 24px;
+}
+
+.infoArea .infoTitle {
+  font-weight: 400;
+  font-size: 16px;
+  color: #1b1b1b;
+  margin-bottom: 8px;
+}
+
+.paymentTypes {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.paymentTypes .paymentBtn {
+  flex: 1;
+}
+
+.cupomInput {
+  display: flex;
+  gap: 14px;
+}
+            
+.productsQuantity {
+  border-top: 2px solid rgba(27, 27, 27, .1);
+  border-bottom: 2px solid rgba(27, 27, 27, .1);
+  padding: 19px 0;
+  font-weight: 400;
+  font-size: 16px;
+  color: #1b1b1b;
+}
+
+.shippingArea {
+  margin-top: 31px;
+}
+
+.shippingTitle {
+  font-weight: 400;
+  font-size: 16px;
+  color: #6A7D8B;
+  margin-bottom: 16px;
+}
+
+.shippingForm {
+  display: flex;
+  gap: 14px;
+}
+
+.shippingInfo {
+  background-color: #F9F9Fa;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 24px 32px;
+}
+
+.shippingAddress {
+  font-weight: 400;
+  font-size: 10px;
+  color: #6A7D8B;
+}
+
+.shippingTime {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.shippingTimeText {
+  font-weight: 400;
+  font-size: 16px;
   color: #000;
 }
 
-.buttonArea {
-  margin: 50px 24px;
-  cursor: pointer;
+.shippingPrice {
+  font-weight: 600;
+  font-size: 16px;
+  color: #000;
+}
+
+.resumeArea {
+  background-color: #F9F9FB;
+  border-radius: 8px;
+  margin-top: 16px;
+  padding: 42px 0px 2px 1px;
+}
+
+.resumeItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.resumeLeft {
+  font-weight: 400;
+  font-size: 16px;
+  color: #000;
+}
+
+.resumeRight {
+  font-weight: 500;
+  font-size: 16px;
+  color: #000;
+}
+
+.resumeLine {
+  border-top: 2px dashed #96A3AB;
+  margin-bottom: 29px;
+}
+
+.resumeRightBig {
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+}
+
+.resumeButton {
+  margin-top: 40px;
 }
