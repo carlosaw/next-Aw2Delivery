@@ -22,7 +22,30 @@ const TEMPORARYoneProduct: Product = {
 }
 
 const TEMPORARYorder: Order = {
-  
+  id: 123,
+  status: 'preparing',
+  orderDate: '2023-02-07',
+  userid: '123',
+  shippingAddress: {
+    id: 2,
+    street: 'Rua das Dálias',
+    number: '301',
+    cep: '78125-590',
+    city: 'Várzea grande',
+    neighborhood: 'Imperador',
+    state: 'MT'
+  },
+  shippingPrice: 9.16,
+  paymentType: 'card',
+  cupom: 'ABC',
+  cupomDiscount: 15.2,
+  products: [
+    { product: { ...TEMPORARYoneProduct, id: 1 }, qt: 1},
+    { product: { ...TEMPORARYoneProduct, id: 2 }, qt: 2},
+    { product: { ...TEMPORARYoneProduct, id: 3 }, qt: 3}
+  ],
+  subtotal: 153,
+  total: 149.96
 }
 
 export const useApi = () => ({
@@ -148,6 +171,10 @@ export const useApi = () => ({
     cupom: string,
     cart: CartItem[]
   ) => {
+    return TEMPORARYorder;
+  }, 
+  
+  getOrder: async(orderid: number) => {
     return TEMPORARYorder;
   }
 
